@@ -20,9 +20,9 @@ const ChatContainer = () => {
   const userId = (selectedUser  as any)?._id;
   // console.log('selecteduser', selectedUser)
 
-  // useEffect(() =>{
-  //   console.log('~~chathooks', isStopTyping, isTyping, userTyping)
-  // },[isStopTyping, isTyping, userTyping])
+  useEffect(() =>{
+    console.log('~~chathooks', isStopTyping, isTyping, userTyping)
+  },[isStopTyping, isTyping, userTyping])
 
   const {
     data: messages = [],
