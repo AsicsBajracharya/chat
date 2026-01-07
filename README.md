@@ -90,10 +90,10 @@ npm install
 Create a `.env` file in the `backend` directory:
 
 ```env
-PORT=3000
+PORT=3001
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
-CLIENT_URL=http://localhost:3001
+CLIENT_URL=http://localhost:3000
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
@@ -110,7 +110,8 @@ npm install
 Create a `.env.local` file in the `next` directory:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3000/api
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+NEXT_PUBLIC_SOCKET_URL="http://localhost:3001"
 ```
 
 ## Running the Application
@@ -133,7 +134,7 @@ cd next
 npm run dev
 ```
 
-The frontend will run on `http://localhost:3000` (or the next available port)
+The frontend must run on `http://localhost:3000` or you need to change the CLIENT_URL inside .env for whichever the frontend is running
 
 ### Production Mode
 
