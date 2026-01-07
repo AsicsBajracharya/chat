@@ -6,14 +6,13 @@ import { useSendMessage, useSubscribeToMessages } from "@/features/chat/chat.hoo
 import { useAuthUser } from "@/features/auth/auth.hooks";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useSocket } from "@/features/socket/socketProvider";
-// import { debounce } from "lodash";
 
 interface MessageInputProps {
   setisChangeInView?:(val:boolean) => void;
 }
 const MessageInput = ({setisChangeInView}: MessageInputProps) => {
   const [text, setText] = useState("");
-  const [imagePreview, setImagePreview] = useState(null); // to scroll the bottom when the user selects an immage
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null); // to scroll the bottom when the user selects an immage
   const {mutate:sendMessage, isPending} = useSendMessage();
   const{data:sender, isLoading} = useAuthUser()
   const { value: receiver, hydrated } = useLocalStorage<any | null>(
@@ -26,14 +25,10 @@ const MessageInput = ({setisChangeInView}: MessageInputProps) => {
 
   const isTypingRef = useRef(false);
 
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const receiverId = receiver?._id;
   const senderId = sender?._id;
-
-  useEffect(() =>{
-    console.log('~isTyping', isTyping)
-  },[isTyping])
 
   useEffect(() => {
     // if text is empty, user is not typing
@@ -48,7 +43,7 @@ const MessageInput = ({setisChangeInView}: MessageInputProps) => {
     // debounce: user stopped typing after 800ms
     const timeout = setTimeout(() => {
       setUserIsTyping(false);
-      console.log("User stopped typing");
+      // console.log("User stopped typing");
       if(socket && receiverId){
         socket.emit('stopTyping',{ to: receiverId })
       }
@@ -61,24 +56,23 @@ const MessageInput = ({setisChangeInView}: MessageInputProps) => {
   const handleSendMessage = (e:any) => {
     
     e.preventDefault();
-    console.log('sender', sender, receiver)
     if (!text.trim() && !imagePreview) return;
-    // if (isSoundEnabled) playRandomKeyStrokeSound();
 
     sendMessage({
         receiverId,
         senderId,
         messageData:{
             text: text.trim(),
+            // @ts-ignore
             image: imagePreview || '',
         }
       });
     setText("");
-    setImagePreview("");
+    setImagePreview(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e:any) => {
     const file = e.target.files[0];
     if (!file.type.startsWith("image/")) {
       //   toast.error("Please select an image file");
@@ -112,7 +106,7 @@ const MessageInput = ({setisChangeInView}: MessageInputProps) => {
         <div className="max-w-full mx-auto mb-3 flex items-center">
           <div className="relative">
             <img
-              src={imagePreview}
+              src={(imagePreview) as any}
               alt="Preview"
               className="w-20 h-20 object-cover rounded-lg border border-blue-700"
             />
@@ -133,25 +127,8 @@ const MessageInput = ({setisChangeInView}: MessageInputProps) => {
           value={text}
           onChange={(e) => {
             setText(e.target.value);
-        
-            // if (!socket || !receiverId) return;
-        
-            // // ✅ send "typing" once when user starts typing
-            // if (!isTypingRef.current) {
-            //   socket.emit("typing", { to: receiverId });
-            //   isTypingRef.current = true;
-            // }
-        
-            // // ✅ reset debounce timer for stopTyping
-            // // if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
-        
-            // typingTimeoutRef.current = setTimeout(() => {
-            //   socket.emit("stopTyping", { to: receiverId });
-            //   isTypingRef.current = false;
-            // }, 800);
           }}
           onBlur={() => {
-            // ✅ if user leaves input, stop typing immediately
             if (!socket || !receiverId) return;
         
             socket.emit("stopTyping", { to: receiverId });
@@ -183,7 +160,7 @@ const MessageInput = ({setisChangeInView}: MessageInputProps) => {
         <button
           type="submit"
           disabled={!text.trim() && !imagePreview}
-          className="text-white rounded-lg px-4 py-2 font-medium bg-blue-600 hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed py-2"
+          className="text-white rounded-lg px-4 font-medium bg-blue-600 hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed py-2"
         >
           <SendIcon className="w-5 h-5" />
         </button>

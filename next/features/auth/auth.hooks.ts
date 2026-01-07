@@ -16,9 +16,6 @@ export function useAuthUser() {
     return useQuery({
       queryKey: ['auth', 'me'],
       queryFn: async () => {
-        console.log('🚀 checkAuth queryFn running');
-        console.log('axios baseURL', axiosInstance.defaults.baseURL);
-        console.log('axios url', axiosInstance.getUri({ url: '/auth/check' }));
         const { data } = await axiosInstance.get('/auth/check');
         return data;
       },

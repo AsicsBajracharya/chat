@@ -145,13 +145,13 @@ export function useSubscribeToMessages() {
   );
 
   useEffect(() => {
-    console.log("SUBSCRIBE EFFECT", {
-      hydrated,
-      hasSocket: !!socket,
-      socketConnected: socket?.connected,
-      selectedUser,
-      selectedUserId: selectedUser?._id,
-    });
+    // console.log("SUBSCRIBE EFFECT", {
+    //   hydrated,
+    //   hasSocket: !!socket,
+    //   socketConnected: socket?.connected,
+    //   selectedUser,
+    //   selectedUserId: selectedUser?._id,
+    // });
 
     if (!hydrated) return;
     if (!socket) return;
@@ -160,7 +160,7 @@ export function useSubscribeToMessages() {
     if (!selectedUserId) return;
 
     const handler = (newMessage: Message) => {
-      console.log("newMessage event fired:", newMessage);
+      // console.log("newMessage event fired:", newMessage);
       const isSoundEnabled =
         localStorage.getItem("chat.isSoundEnabled") !== "false";
 
@@ -187,21 +187,21 @@ export function useSubscribeToMessages() {
       );
     };
 
-    console.log("Attaching newMessage listener for:", selectedUserId);
+    // console.log("Attaching newMessage listener for:", selectedUserId);
 
     socket.on("typing", ({ to }) => {
       setIsTyping(true)
-    console.log("~~typing from", selectedUserId, "to", to, "socket", selectedUserId);
+    // console.log("~~typing from", selectedUserId, "to", to, "socket", selectedUserId);
     })
     socket.on("stopTyping", ({ to }) => {
       // setIsTyping(false)
       setIsStopTyping(true)
-    console.log("~~stopTyping", selectedUserId, "to", to, "socket", selectedUserId);
+    // console.log("~~stopTyping", selectedUserId, "to", to, "socket", selectedUserId);
     })
     socket.on("newMessage", handler);
 
     return () => {
-      console.log("Detaching newMessage listener for:", selectedUserId);
+      // console.log("Detaching newMessage listener for:", selectedUserId);
       socket.off("newMessage", handler);
     };
   }, [socket, hydrated, selectedUser?._id, qc]);

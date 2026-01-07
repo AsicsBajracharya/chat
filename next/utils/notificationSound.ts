@@ -15,7 +15,7 @@ export function initNotificationSound() {
       audio?.pause();
       audio!.currentTime = 0;
       unlocked = true;
-      console.log("🔓 Audio unlocked");
+      console.log("Audio unlocked");
     })
     .catch(() => {
       // Will fail until user gesture

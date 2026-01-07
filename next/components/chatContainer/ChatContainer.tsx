@@ -18,11 +18,11 @@ const ChatContainer = () => {
 
   const { data: authUser, isLoading: isUserLoading } = useAuthUser();
   const userId = (selectedUser  as any)?._id;
-  console.log('selecteduser', selectedUser)
+  // console.log('selecteduser', selectedUser)
 
-  useEffect(() =>{
-    console.log('~~chathooks', isStopTyping, isTyping, userTyping)
-  },[isStopTyping, isTyping, userTyping])
+  // useEffect(() =>{
+  //   console.log('~~chathooks', isStopTyping, isTyping, userTyping)
+  // },[isStopTyping, isTyping, userTyping])
 
   const {
     data: messages = [],
@@ -32,7 +32,7 @@ const ChatContainer = () => {
 
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    console.log("change in view");
+    // console.log("change in view");
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }

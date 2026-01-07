@@ -19,10 +19,10 @@ const ChatList = () => {
     if (drawer) drawer.checked = false;
   };
 
-  useEffect(() =>{
-    console.log('data', data)
-    console.log('isloading', isLoading)
-  },[data])
+  // useEffect(() =>{
+  //   console.log('data', data)
+  //   console.log('isloading', isLoading)
+  // },[data])
   return (
     <>
     {data?.map((chat:any) => (

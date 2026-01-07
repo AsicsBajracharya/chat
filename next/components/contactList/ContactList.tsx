@@ -16,11 +16,11 @@ const ContactList = () => {
   //   const { data: onlineUsers = [] } = useOnlineUsers(); todo remove this hook
   const { onlineUsers } = useSocket();
 
-  useEffect(() => {
-    console.log("contactData: allContacts", allContacts);
-    console.log("isloading", isLoading);
-    console.log("~isloadionlineUsersonlineUsersng", onlineUsers);
-  }, [allContacts, onlineUsers]);
+  // useEffect(() => {
+  //   console.log("contactData: allContacts", allContacts);
+  //   console.log("isloading", isLoading);
+  //   console.log("~isloadionlineUsersonlineUsersng", onlineUsers);
+  // }, [allContacts, onlineUsers]);
   return (
     <>
       {allContacts?.map((contact: any) => (
@@ -28,7 +28,7 @@ const ContactList = () => {
         key={contact._id}
         contact={contact}
         onlineUsers={onlineUsers}
-        onSelect={setSelectedUser}
+        onSelect={(setSelectedUser) as any}
       />
       ))}
     </>
